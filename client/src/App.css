@@ -1,0 +1,38 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  min-height: 100vh;
+  padding: 10px;
+}
+
+header {
+  display: flex;
+}
+
+header #title {
+  padding-left: 10px;
+  margin-right: auto;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+header nav ul {
+  height: 100%;
+  display: flex;
+  list-style-type: none;
+}
+
+header nav ul li {
+  padding: 16px 20px;
+}
+
+header nav a,
+header nav a:visited {
+  color: inherit;
+  text-decoration: none;
+}
