@@ -1,0 +1,51 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Raleway&display=swap');
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-snap-type: y mandatory;
+}
+
+body > * {
+  font-family: 'Roboto', sans-serif;
+  min-height: 100vh;
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
+}
+
+#landing {
+  color: white;
+
+  background: linear-gradient(rgba(0, 0, 0, 0.9),rgba(0, 0, 0, 0.8)), url('images/crypto-landing.jpg');
+  background-position: center;
+  background-size: cover;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+#landing h1 {
+  font-size: 6em;
+}
+
+#landing p {
+  font-size: 2em;
+}
+
+#landing button {
+  width: 200px;
+  height: 70px;
+  margin-top: 20px;
+}
+
+main {
+  min-height: 100vh;
+}
+
