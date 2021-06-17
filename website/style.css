@@ -1,30 +1,39 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Raleway&display=swap');
 
 * {
+  /* Reset all default margin/padding from elements. Makes sizing/positioning easier*/
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
 
 html {
+  font-family: 'Roboto', sans-serif;
   scroll-snap-type: y mandatory;
 }
 
+body {
+  color: white;
+  background-color: #101213;
+}
+
 body > * {
-  font-family: 'Roboto', sans-serif;
-  min-height: 100vh;
+  padding: 20px 40px;
+  min-height: 100vh; /* at least until we have enough content to span another full screen height */
   scroll-snap-align: start;
   scroll-snap-stop: always;
 }
 
 #landing {
-  color: white;
+  
+  min-height: 100vh;
 
+  /* Background image for landing */
   background: linear-gradient(rgba(0, 0, 0, 0.9),rgba(0, 0, 0, 0.8)), url('images/crypto-landing.jpg');
   background-position: center;
   background-size: cover;
 
+  /* Center content & display in column format */
   display: flex;
   flex-direction: column;
   justify-content: center;
