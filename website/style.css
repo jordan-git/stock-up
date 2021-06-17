@@ -25,7 +25,7 @@ body > * {
 }
 
 #landing {
-  min-height: 100vh;
+  min-height: 100vh;  
 
   /* Center content & display in column format */
   display: flex;
@@ -42,9 +42,12 @@ body > * {
   left: 0;
   width: 100%; 
   height: 100%;
-  background: url('images/crypto-landing.jpg');
-  filter: brightness(20%);
   z-index: -1;
+
+  background: url('images/crypto-landing.jpg');
+  background-position: center;
+  background-size: cover;
+  filter: brightness(20%);
 }
 
 #landing h1 {
