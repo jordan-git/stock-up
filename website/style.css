@@ -25,19 +25,26 @@ body > * {
 }
 
 #landing {
-  
   min-height: 100vh;
-
-  /* Background image for landing */
-  background: linear-gradient(rgba(0, 0, 0, 0.9),rgba(0, 0, 0, 0.8)), url('images/crypto-landing.jpg');
-  background-position: center;
-  background-size: cover;
 
   /* Center content & display in column format */
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+}
+
+/* Pseudo element for background-image so filter only applies to the image itself */
+#landing::before {
+  content: "";
+  position: absolute;
+  top: 0; 
+  left: 0;
+  width: 100%; 
+  height: 100%;
+  background: url('images/crypto-landing.jpg');
+  filter: brightness(20%);
+  z-index: -1;
 }
 
 #landing h1 {
