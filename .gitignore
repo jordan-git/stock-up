@@ -1,5 +1,5 @@
 .vscode/*
-!.vscode/tasks.json
+# !.vscode/tasks.json
 workspace.code-workspace
 
 # Created by https://www.toptal.com/developers/gitignore/api/python
