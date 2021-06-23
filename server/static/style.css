@@ -1,7 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
 
+/* Reset all default margin/padding from elements. Makes sizing/positioning easier */
 * {
-  /* Reset all default margin/padding from elements. Makes sizing/positioning easier*/
   margin: 0;
   padding: 0;
   box-sizing: border-box;
@@ -17,7 +17,7 @@ body {
   background-color: #101213;
 }
 
-body > * {
+.page {
   padding: 20px 40px;
   min-height: 100vh; /* at least until we have enough content to span another full screen height */
   scroll-snap-align: start;
