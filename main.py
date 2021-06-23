@@ -15,15 +15,16 @@ client = Client(api_key, api_secret)
 client.API_URL = 'https://testnet.binance.vision/api'
 
 '''code below sells BTC for USD'''
-#sell_order = client.create_order(symbol = "BTCUSDT", side = "buy", type = "MARKET", quantity = 1)
+##sell_order = client.create_order(symbol = "BTCUSDT", side = "sell", type = "MARKET", quantity = 1)
 
 ''' 3 lines below print account balance of all assets, BTC balance in account, and USD balance in account'''
 #print(client.get_account())
 
-#print(client.get_asset_balance(asset='BTC'))
+print(client.get_asset_balance(asset='BTC'))
 
-#print(client.get_asset_balance(asset='USDT'))
+print(client.get_asset_balance(asset='USDT'))
 
+buyPrice = 0
 
 '''Code below opens a web socket and continually prints price of BTC'''
 btc_price = {'error':False}
@@ -31,6 +32,8 @@ btc_price = {'error':False}
 def btc_price1(msg):
     if msg['e'] != 'error':
         print(msg['c'])
+        print('shit')
+        testFunction(msg['c'])
         btc_price['last'] = msg['c']
         btc_price['bid'] = msg['b']
         btc_price['last'] = msg['a']
@@ -41,6 +44,14 @@ sm = BinanceSocketManager(client)
 
 conn = sm.start_symbol_ticker_socket('BTCUSDT', btc_price1)
 sm.start()
+
+#Put buy/sell logic here
+def testFunction(currentPrice):
+    if buyPrice == 0:
+      #  sell_order = client.create_order(symbol = "BTCUSDT", side = "sell", type = "MARKET", quantity = 1)
+   # if currentPrice / buyPrice * 100 >= 0.5:
+
+
 
 
 
