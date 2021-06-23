@@ -1,7 +1,8 @@
 import os
-from binance.client import Client
-from binance.websockets import BinanceSocketManager
-from twisted.internet import reactor 
+
+from binance import Client, BinanceSocketManager
+
+# from twisted.internet import reactor 
 
 ## pip install python-binance==0.7.9 
 ## Installs appropriate python-binance version
