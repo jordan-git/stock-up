@@ -3,13 +3,13 @@
 ### Setup Project
 `python ./setup.py`
 
-### Activate Virtual Environment
+### Activate Virtual Environment (opening terminal in VS Code does this automatically)
 `.\venv\Scripts\activate`
 
 ### Deactivate Virtual Environment
 `deactivate`
 
-### Update requirements.txt with new packages (use while venv is active)
+### Update requirements.txt with new packages (must use while venv is active)
 `pip freeze > requirements.txt`
 
 # Definitions
