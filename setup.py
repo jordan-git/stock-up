@@ -2,10 +2,10 @@ import os
 import sys
 import subprocess
 
+required_env_variables = ['API_KEY', 'API_SECRET']
+
 # Create .env template
 print("Generating .env template")
-
-required_env_variables = ['API_KEY', 'API_SECRET']
 
 with open('.env', 'w') as file:
     for key in required_env_variables:

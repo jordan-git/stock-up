@@ -1,7 +1,7 @@
 # Commands
 
 ### Setup Project
-`python ./setup.py`
+`python .\setup.py`
 
 ### Activate Virtual Environment (opening terminal in VS Code does this automatically)
 `.\venv\Scripts\activate`
@@ -11,6 +11,9 @@
 
 ### Update requirements.txt with new packages (must use while venv is active)
 `pip freeze > requirements.txt`
+
+### Start Flask server (must use while venv is active)
+`python .\server\app.py`
 
 # Definitions
 

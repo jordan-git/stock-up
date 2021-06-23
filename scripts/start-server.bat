@@ -1,2 +1,1 @@
-cd ./server
-flask run
+python .\server\app.py

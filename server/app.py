@@ -5,3 +5,5 @@ app = Flask(__name__)
 @app.route('/')
 def root():
     return send_file('index.html')
+
+app.run(debug=True)
