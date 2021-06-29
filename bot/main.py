@@ -26,6 +26,7 @@ print(client.get_asset_balance(asset='BTC'))
 
 print(client.get_asset_balance(asset='USDT'))
 
+global buyPrice
 buyPrice = 0
 
 '''Code below opens a web socket and continually prints price of BTC'''
@@ -46,15 +47,6 @@ sm = BinanceSocketManager(client)
 conn = sm.start_symbol_ticker_socket('BTCUSDT', btc_price1)
 sm.start()
 
-
-
-'''Put buy/sell logic here'''
-def testFunction():
-        print(currentPrice)
-        #  if buyPrice == 0:
-         #  sell_order = client.create_order(symbol = "BTCUSDT", side = "sell", type = "MARKET", quantity = 1)
-         # if currentPrice / buyPrice * 100 >= 0.5:
-
 '''Function below exchanges USD for BTC'''
 def buyBTC():
     buy_order = client.create_order(symbol = "BTCUSDT", side = "buy", type = "MARKET", quantity = 1)
@@ -68,8 +60,27 @@ def percentageDifference(currentPrice, buyPrice):
     difference = (currentPrice - buyPrice) / (buyPrice) * 100
     return difference 
 
-testVar = percentageDifference(800, 1000)
-print(testVar)
+'''Put buy/sell logic here'''
+def testFunction():
+        pDifference = percentageDifference(currentPrice, buyPrice)
+        print(currentPrice)
+        if  buyPrice == 0:
+            buyBTC()
+            global buyPrice
+            buyPrice = currentPrice
+        elif pDifference >= .02 & buyPrice != 0:
+            sellBTC()
+        elif pDifference <= -0.05 & buyPrice != 0:
+            sellBTC()
+
+
+
+
+
+
+
+
+
 
 
   
