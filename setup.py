@@ -20,9 +20,9 @@ subprocess.check_call([sys.executable, "-m", "venv", "venv"])
 print("Installing packages from requirements.txt")
 
 project_root_path = os.path.dirname(__file__)
-venv_python_path = os.path.join(project_root_path, "venv\Scripts\python.exe")
+venv_python_path = os.path.join(project_root_path, r"venv\Scripts\python.exe")
 
-subprocess.check_call([venv_python_path, "-m", "pip", "install", '-U', 'pip'], stdout=subprocess.DEVNULL)
+subprocess.check_call([venv_python_path, "-m", "pip", "install", "-U", "pip"], stdout=subprocess.DEVNULL)
 subprocess.check_call([venv_python_path, "-m", "pip", "install", "-r", "requirements.txt"], stdout=subprocess.DEVNULL)
 
 print("Done! Make sure to insert your environment variables into the .env file")
