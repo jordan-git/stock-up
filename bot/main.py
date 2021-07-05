@@ -1,9 +1,9 @@
 import os
 from binance.client import Client
 from binance.websockets import BinanceSocketManager
-from twisted.internet import reactor 
+from twisted.internet import reactor
 
-## pip install python-binance==0.7.9 
+## pip install python-binance==0.7.9
 ## Installs appropriate python-binance version
 
 api_key = "0S6eRCHoDIrAc35nnMoWFzbiOJOhNmdVI7rM6roV872E7BfbF9u6ZBjYMp7uLFkd"
@@ -38,7 +38,7 @@ def btc_price1(msg):
         currentPrice = msg['c'];
      #   print(currentPrice);
       #  testFunction()
-       
+
     else:
         btc_price['error'] = True
 
@@ -58,7 +58,7 @@ def sellBTC():
 '''Function below calculates percentage difference between two numbers'''
 def percentageDifference(currentPrice, buyPrice):
     difference = (currentPrice - buyPrice) / (buyPrice) * 100
-    return difference 
+    return difference
 
 '''Put buy/sell logic here'''
 def testFunction():
@@ -73,20 +73,4 @@ def testFunction():
         elif pDifference <= -0.05 & buyPrice != 0:
             sellBTC()
 
-
-
-
-
-
-
-
-
-
-
-  
-
-
-
-
-
-
+            
