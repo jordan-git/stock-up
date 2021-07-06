@@ -1,13 +1,9 @@
 import os
 from binance.client import Client
 from binance.websockets import BinanceSocketManager
-<<<<<<< HEAD
 from twisted.internet import reactor 
 from tkinter import *
 from tkinter import scrolledtext
-=======
-from twisted.internet import reactor
->>>>>>> fe3802b47c29738999e370111874ae65cbf17d45
 
 ## pip install python-binance==0.7.9
 ## Installs appropriate python-binance version
@@ -37,14 +33,8 @@ def btc_price1(msg):
     if msg['e'] != 'error':
         global currentPrice
         currentPrice = msg['c'];
-<<<<<<< HEAD
         text.grid(column=0, row=0)
         text.insert(INSERT, currentPrice + "\n")       
-=======
-     #   print(currentPrice);
-      #  testFunction()
-
->>>>>>> fe3802b47c29738999e370111874ae65cbf17d45
     else:
         btc_price['error'] = True
 
@@ -74,7 +64,6 @@ def testFunction():
         elif pDifference <= -0.05 & buyPrice != 0:
             sellBTC()
 
-<<<<<<< HEAD
 def main():
     print("Hello World")
     window.title("StockUp")
@@ -107,6 +96,3 @@ if __name__ == "__main__":
 
 
 
-=======
-            
->>>>>>> fe3802b47c29738999e370111874ae65cbf17d45
