@@ -18,19 +18,26 @@ stopLoss = -0.05
 
 lastOpSell = True
 
+
 window = Tk()
-text =  scrolledtext.ScrolledText(window, width=40, height = 10)
+priceTicker =  scrolledtext.ScrolledText(window, width=40, height = 10)
+orders = scrolledtext.ScrolledText(window, width=40, height = 10)
 
 api_key = "0S6eRCHoDIrAc35nnMoWFzbiOJOhNmdVI7rM6roV872E7BfbF9u6ZBjYMp7uLFkd"
 api_secret = "McQE8un0xPY5GOtHTuBDBer7my5dFSqe5ffJ2gilKWGwEMn1SY8jE7sBQoOgBNRP"
 client = Client(api_key, api_secret)
 client.API_URL = 'https://testnet.binance.vision/api'
 
+usdBalance = client.get_asset_balance(asset='USDT')
+btcBalance = client.get_asset_balance(asset = 'BTC')
+
+usdBalance1 = float(usdBalance['free'])
+
 
 ''' 3 lines below print account balance of all assets, BTC balance in account, and USD balance in account'''
 #print(client.get_account())
-#print(client.get_asset_balance(asset='BTC'))
-#print(client.get_asset_balance(asset='USDT'))
+print(client.get_asset_balance(asset='BTC'))
+print(client.get_asset_balance(asset='USDT'))
 
 
 '''Code below opens a web socket and continually prints price of BTC'''
@@ -39,15 +46,20 @@ btc_price = {'error':False}
 def btc_price1(msg):
     if msg['e'] != 'error':
         global currentPrice
-        currentPrice = msg['c'];
-        text.grid(column=0, row=0)
-        text.insert(INSERT, currentPrice + "\n")       
+        currentPrice = msg['c']
+        priceTicker.insert(INSERT, currentPrice + "\n")
+        tradeLogic() 
+        #sellBTC()    
     else:
         btc_price['error'] = True
 
 '''Function below exchanges USD for BTC'''
 def buyBTC():
-    buy_order = client.create_order(symbol = "BTCUSDT", side = "buy", type = "MARKET", quantity = 1)
+    decimal = (usdBalance1 / float(currentPrice)) * .90
+    roundDecimal = round(decimal, 4)
+    print(roundDecimal) 
+    buy_order = client.create_order(symbol = "BTCUSDT", side = "buy", type = "MARKET", quantity = roundDecimal)
+    
 
 '''Function below exchanges BTC for USD'''
 def sellBTC():
@@ -55,10 +67,15 @@ def sellBTC():
 
 '''Function below calculates percentage difference between two numbers'''
 def percentageDifference(currentPrice, buyPrice):
-    difference = (currentPrice - buyPrice) / (buyPrice) * 100
-    return difference
+    if currentPrice == 0:
+        currentPriceFloat = float(currentPrice)
+        difference = (currentPriceFloat - buyPrice) / (buyPrice) * 100
+    else:
+        difference = 0 
 
-'''Put buy/sell logic here'''
+        return difference
+
+    '''Put buy/sell logic here'''
 def tradeLogic():
         global buyPrice
         global sellPrice
@@ -69,27 +86,32 @@ def tradeLogic():
         if lastOpSell == True:
             if  buyPrice == 0:
                 buyBTC()
-                buyPrice = currentPrice
+                buyPrice = float(currentPrice)
                 lastOpSell = False
+                orders.insert(INSERT, "1 BTC Purchased for " + buyPrice)    
             elif pDifferenceBuy >= buyThreshold: 
                 buyBTC()
-                buyPrice = currentPrice
+                buyPrice = float(currentPrice)
                 lastOpSell = False
+                orders.insert(INSERT, "1 BTC Purchased for " + buyPrice)    
         else:
             if pDifferenceSell >= sellThreshold & buyPrice != 0:
                 sellBTC()
-                sellPrice = currentPrice
+                sellPrice = float(currentPrice)
                 lastOpSell = True
+                orders.insert(INSERT, "1 BTC Sold for " + sellPrice)    
             elif pDifferenceSell <= stopLoss & buyPrice != 0:
                 sellBTC()
-                sellPrice = currentPrice
+                sellPrice = float(currentPrice)
                 lastOpSell = True
+                orders.insert(INSERT, "1 BTC Sold for " + sellPrice)  
 
 def main():
-    print("Hello World")
     window.title("StockUp")
     window.geometry('400x270')
-
+    priceTicker.grid(column=0, row=0)
+    orders.grid(column=1, row=0)
+    
     sm = BinanceSocketManager(client)
     conn = sm.start_symbol_ticker_socket('BTCUSDT', btc_price1)
     sm.start()
