@@ -10,6 +10,13 @@ from tkinter import scrolledtext
 
 currentPrice = 0
 buyPrice = 0
+sellPrice = 0
+
+buyThreshold = 0.02 
+sellThreshold = 0.02
+stopLoss = -0.05
+
+lastOpSell = True
 
 window = Tk()
 text =  scrolledtext.ScrolledText(window, width=40, height = 10)
@@ -52,17 +59,31 @@ def percentageDifference(currentPrice, buyPrice):
     return difference
 
 '''Put buy/sell logic here'''
-def testFunction():
+def tradeLogic():
         global buyPrice
-        pDifference = percentageDifference(currentPrice, buyPrice)
+        global sellPrice
+        global lastOpSell
+        pDifferenceSell = percentageDifference(currentPrice, buyPrice)
+        pDifferenceBuy = percentageDifference(currentPrice, sellPrice)
         print(currentPrice)
-        if  buyPrice == 0:
-            buyBTC()
-            buyPrice = currentPrice
-        elif pDifference >= .02 & buyPrice != 0:
-            sellBTC()
-        elif pDifference <= -0.05 & buyPrice != 0:
-            sellBTC()
+        if lastOpSell == True:
+            if  buyPrice == 0:
+                buyBTC()
+                buyPrice = currentPrice
+                lastOpSell = False
+            elif pDifferenceBuy >= buyThreshold: 
+                buyBTC()
+                buyPrice = currentPrice
+                lastOpSell = False
+        else:
+            if pDifferenceSell >= sellThreshold & buyPrice != 0:
+                sellBTC()
+                sellPrice = currentPrice
+                lastOpSell = True
+            elif pDifferenceSell <= stopLoss & buyPrice != 0:
+                sellBTC()
+                sellPrice = currentPrice
+                lastOpSell = True
 
 def main():
     print("Hello World")
