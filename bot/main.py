@@ -12,9 +12,10 @@ currentPrice = 0
 buyPrice = 0
 sellPrice = 0
 
-buyThreshold = 0.02 
-sellThreshold = 0.02
-stopLoss = -0.05
+buyThreshold = 0.0002 
+sellThreshold = 0.0002
+stopLoss = -0.0005
+roundDecimal = 0
 
 lastOpSell = True
 
@@ -32,6 +33,7 @@ usdBalance = client.get_asset_balance(asset='USDT')
 btcBalance = client.get_asset_balance(asset = 'BTC')
 
 usdBalance1 = float(usdBalance['free'])
+btcBalance1 = round(float(btcBalance['free']), 6)
 
 
 ''' 3 lines below print account balance of all assets, BTC balance in account, and USD balance in account'''
@@ -48,63 +50,83 @@ def btc_price1(msg):
         global currentPrice
         currentPrice = msg['c']
         priceTicker.insert(INSERT, currentPrice + "\n")
-        tradeLogic() 
+        #tradeLogic() 
         #sellBTC()    
     else:
         btc_price['error'] = True
 
 '''Function below exchanges USD for BTC'''
 def buyBTC():
-    decimal = (usdBalance1 / float(currentPrice)) * .90
-    roundDecimal = round(decimal, 4)
+    usdBalanceBuy = client.get_asset_balance(asset='USDT')
+    usdBalanceBuy1 = float(usdBalance['free'])
+    decimal = (usdBalanceBuy1 / float(currentPrice)) * .90
+    roundDecimal = round(decimal, 6)
     print(roundDecimal) 
     buy_order = client.create_order(symbol = "BTCUSDT", side = "buy", type = "MARKET", quantity = roundDecimal)
-    
+    print('BTC Bought')
+    global btcBalance1
+    btcBalance1 = round(float(btcBalance['free']), 2)
+   # print(str(btcBalance1) + '---')
 
 '''Function below exchanges BTC for USD'''
 def sellBTC():
-    sell_order = client.create_order(symbol = "BTCUSDT", side = "sell", type = "MARKET", quantity = 1)
+    print("tryna sell")
+    btcBalance2 = round(float(btcBalance['free']), 2)
+    print(btcBalance2)
+    sell_order = client.create_order(symbol = "BTCUSDT", side = "sell", type = "MARKET", quantity = btcBalance1)
+    print("BTC Sold")
 
 '''Function below calculates percentage difference between two numbers'''
 def percentageDifference(currentPrice, buyPrice):
-    if currentPrice == 0:
+    if buyPrice != 0:
         currentPriceFloat = float(currentPrice)
         difference = (currentPriceFloat - buyPrice) / (buyPrice) * 100
     else:
         difference = 0 
-
-        return difference
+    return difference
 
     '''Put buy/sell logic here'''
 def tradeLogic():
         global buyPrice
         global sellPrice
         global lastOpSell
-        pDifferenceSell = percentageDifference(currentPrice, buyPrice)
-        pDifferenceBuy = percentageDifference(currentPrice, sellPrice)
+        if buyPrice != 0:
+            pDifferenceSell = percentageDifference(currentPrice, buyPrice)
+            print(currentPrice)
+            print(buyPrice)
+            print(pDifferenceSell)
+            if sellPrice != 0:
+                pDifferenceBuy = percentageDifference(currentPrice, sellPrice)
+
         print(currentPrice)
         if lastOpSell == True:
+            print("Buy running")
             if  buyPrice == 0:
                 buyBTC()
                 buyPrice = float(currentPrice)
                 lastOpSell = False
-                orders.insert(INSERT, "1 BTC Purchased for " + buyPrice)    
+                orders.insert(INSERT, " BTC Purchased for " + str(buyPrice) + "\n")    
             elif pDifferenceBuy >= buyThreshold: 
                 buyBTC()
                 buyPrice = float(currentPrice)
                 lastOpSell = False
-                orders.insert(INSERT, "1 BTC Purchased for " + buyPrice)    
+                orders.insert(INSERT, "1 BTC Purchased for " + str(buyPrice) + "\n")    
         else:
-            if pDifferenceSell >= sellThreshold & buyPrice != 0:
+            print("sell running")
+          #  print(pDifferenceSell)
+           # print(pDifferenceBuy)
+            print(currentPrice)
+            print(buyPrice)
+            if pDifferenceSell >= sellThreshold:
                 sellBTC()
                 sellPrice = float(currentPrice)
                 lastOpSell = True
-                orders.insert(INSERT, "1 BTC Sold for " + sellPrice)    
-            elif pDifferenceSell <= stopLoss & buyPrice != 0:
+                orders.insert(INSERT, "1 BTC Sold for " + str(sellPrice) + "\n")    
+            elif pDifferenceSell <= stopLoss:
                 sellBTC()
                 sellPrice = float(currentPrice)
                 lastOpSell = True
-                orders.insert(INSERT, "1 BTC Sold for " + sellPrice)  
+                orders.insert(INSERT, "1 BTC Sold for " + str(sellPrice)+"\n")  
 
 def main():
     window.title("StockUp")
