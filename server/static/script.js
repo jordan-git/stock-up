@@ -7,5 +7,5 @@ function scrollTo(element) {
 
 // Scrolls from landing to the content
 landingBtn.addEventListener('click', () => {
-  scrollTo(document.querySelector('section:nth-child(2)'));
+  scrollTo(document.querySelector('.page:nth-child(2)'));
 });

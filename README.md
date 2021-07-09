@@ -9,10 +9,10 @@
 ### Deactivate Virtual Environment
 `deactivate`
 
-### Update requirements.txt with new packages (must use while venv is active)
+### Update requirements.txt with new packages (must use while virtual env is active)
 `pip freeze > requirements.txt`
 
-### Start Flask server (must use while venv is active)
+### Start Flask server (must use while virtual env is active)
 `python .\server\app.py`
 
 # Definitions
