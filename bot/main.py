@@ -1,18 +1,18 @@
 import os
 from binance.client import Client
 from binance.websockets import BinanceSocketManager
-from twisted.internet import reactor 
+from twisted.internet import reactor
 from tkinter import *
 from tkinter import scrolledtext
 
 ## pip install python-binance==0.7.9
 ## Installs appropriate python-binance version
-
+'''All Prices currently set to 0 '''
 currentPrice = 0
 buyPrice = 0
 sellPrice = 0
 
-buyThreshold = 0.0002 
+buyThreshold = 0.0002
 sellThreshold = 0.0002
 stopLoss = -0.0005
 roundDecimal = 0
@@ -50,8 +50,8 @@ def btc_price1(msg):
         global currentPrice
         currentPrice = msg['c']
         priceTicker.insert(INSERT, currentPrice + "\n")
-        #tradeLogic() 
-        #sellBTC()    
+        #tradeLogic()
+        #sellBTC()
     else:
         btc_price['error'] = True
 
@@ -61,7 +61,7 @@ def buyBTC():
     usdBalanceBuy1 = float(usdBalance['free'])
     decimal = (usdBalanceBuy1 / float(currentPrice)) * .90
     roundDecimal = round(decimal, 6)
-    print(roundDecimal) 
+    print(roundDecimal)
     buy_order = client.create_order(symbol = "BTCUSDT", side = "buy", type = "MARKET", quantity = roundDecimal)
     print('BTC Bought')
     global btcBalance1
@@ -82,7 +82,7 @@ def percentageDifference(currentPrice, buyPrice):
         currentPriceFloat = float(currentPrice)
         difference = (currentPriceFloat - buyPrice) / (buyPrice) * 100
     else:
-        difference = 0 
+        difference = 0
     return difference
 
     '''Put buy/sell logic here'''
@@ -105,12 +105,12 @@ def tradeLogic():
                 buyBTC()
                 buyPrice = float(currentPrice)
                 lastOpSell = False
-                orders.insert(INSERT, " BTC Purchased for " + str(buyPrice) + "\n")    
-            elif pDifferenceBuy >= buyThreshold: 
+                orders.insert(INSERT, " BTC Purchased for " + str(buyPrice) + "\n")
+            elif pDifferenceBuy >= buyThreshold:
                 buyBTC()
                 buyPrice = float(currentPrice)
                 lastOpSell = False
-                orders.insert(INSERT, "1 BTC Purchased for " + str(buyPrice) + "\n")    
+                orders.insert(INSERT, "1 BTC Purchased for " + str(buyPrice) + "\n")
         else:
             print("sell running")
           #  print(pDifferenceSell)
@@ -121,19 +121,19 @@ def tradeLogic():
                 sellBTC()
                 sellPrice = float(currentPrice)
                 lastOpSell = True
-                orders.insert(INSERT, "1 BTC Sold for " + str(sellPrice) + "\n")    
+                orders.insert(INSERT, "1 BTC Sold for " + str(sellPrice) + "\n")
             elif pDifferenceSell <= stopLoss:
                 sellBTC()
                 sellPrice = float(currentPrice)
                 lastOpSell = True
-                orders.insert(INSERT, "1 BTC Sold for " + str(sellPrice)+"\n")  
+                orders.insert(INSERT, "1 BTC Sold for " + str(sellPrice)+"\n")
 
 def main():
     window.title("StockUp")
     window.geometry('400x270')
     priceTicker.grid(column=0, row=0)
     orders.grid(column=1, row=0)
-    
+
     sm = BinanceSocketManager(client)
     conn = sm.start_symbol_ticker_socket('BTCUSDT', btc_price1)
     sm.start()
@@ -144,20 +144,3 @@ def main():
 
 if __name__ == "__main__":
      main()
-
-
-
-
-
-
-
-
-
-
-  
-
-
-
-
-
-
