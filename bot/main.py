@@ -12,15 +12,10 @@ currentPrice = 0
 buyPrice = 0
 sellPrice = 0
 
-<<<<<<< HEAD
+
 buyThreshold = -0.02 
 sellThreshold = 0.02
 stopLoss = -0.05
-=======
-buyThreshold = 0.0002
-sellThreshold = 0.0002
-stopLoss = -0.0005
->>>>>>> 2108b84342a89d27dccee70ce08036563be53ad1
 roundDecimal = 0
 
 lastOpSell = True
@@ -112,13 +107,8 @@ def tradeLogic():
                 buyBTC()
                 buyPrice = float(currentPrice)
                 lastOpSell = False
-<<<<<<< HEAD
                 orders.insert(INSERT, " BTC Purchased for " + str(buyPrice) + "\n")    
             elif pDifferenceBuy <= buyThreshold: 
-=======
-                orders.insert(INSERT, " BTC Purchased for " + str(buyPrice) + "\n")
-            elif pDifferenceBuy >= buyThreshold:
->>>>>>> 2108b84342a89d27dccee70ce08036563be53ad1
                 buyBTC()
                 buyPrice = float(currentPrice)
                 lastOpSell = False
@@ -143,7 +133,6 @@ def tradeLogic():
 def main():
     window.title("StockUp")
     window.geometry('400x270')
-<<<<<<< HEAD
     priceTicker.grid(column=0, row=1)
     orders.grid(column=1, row=1)
 
@@ -165,10 +154,6 @@ def main():
     btcBal = Text(window, height = 1, width = 25)
     btcBal.grid(column=1, row = 3)
     btcBal.insert(INSERT, btcBalance1)
-=======
-    priceTicker.grid(column=0, row=0)
-    orders.grid(column=1, row=0)
->>>>>>> 2108b84342a89d27dccee70ce08036563be53ad1
 
     sm = BinanceSocketManager(client)
     conn = sm.start_symbol_ticker_socket('BTCUSDT', btc_price1)
