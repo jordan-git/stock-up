@@ -1,34 +1,45 @@
 import os
+from binance.client import Client
+from binance.websockets import BinanceSocketManager
+from twisted.internet import reactor
+from tkinter import Tk, scrolledtext
 
-from binance import Client, BinanceSocketManager
-
-# from twisted.internet import reactor 
-
-## pip install python-binance==0.7.9 
+## pip install python-binance==0.7.9
 ## Installs appropriate python-binance version
 
+currentPrice = 0
+buyPrice = 0
+sellPrice = 0
+
+buyThreshold = 0.0002 
+sellThreshold = 0.0002
+stopLoss = -0.0005
+roundDecimal = 0
+
+lastOpSell = True
+
+
+window = Tk()
+priceTicker =  scrolledtext.ScrolledText(window, width=40, height = 10)
+orders = scrolledtext.ScrolledText(window, width=40, height = 10)
+
 api_key = "0S6eRCHoDIrAc35nnMoWFzbiOJOhNmdVI7rM6roV872E7BfbF9u6ZBjYMp7uLFkd"
-
 api_secret = "McQE8un0xPY5GOtHTuBDBer7my5dFSqe5ffJ2gilKWGwEMn1SY8jE7sBQoOgBNRP"
-
 client = Client(api_key, api_secret)
-
 client.API_URL = 'https://testnet.binance.vision/api'
 
-global currentPrice;
+usdBalance = client.get_asset_balance(asset='USDT')
+btcBalance = client.get_asset_balance(asset = 'BTC')
 
-
+usdBalance1 = float(usdBalance['free'])
+btcBalance1 = round(float(btcBalance['free']), 6)
 
 
 ''' 3 lines below print account balance of all assets, BTC balance in account, and USD balance in account'''
 #print(client.get_account())
-
 print(client.get_asset_balance(asset='BTC'))
-
 print(client.get_asset_balance(asset='USDT'))
 
-global buyPrice
-buyPrice = 0
 
 '''Code below opens a web socket and continually prints price of BTC'''
 btc_price = {'error':False}
@@ -36,45 +47,102 @@ btc_price = {'error':False}
 def btc_price1(msg):
     if msg['e'] != 'error':
         global currentPrice
-        currentPrice = msg['c'];
-     #   print(currentPrice);
-      #  testFunction()
-       
+        currentPrice = msg['c']
+        priceTicker.insert(INSERT, currentPrice + "\n")
+        #tradeLogic() 
+        #sellBTC()    
     else:
         btc_price['error'] = True
 
-sm = BinanceSocketManager(client)
-
-conn = sm.start_symbol_ticker_socket('BTCUSDT', btc_price1)
-sm.start()
-
 '''Function below exchanges USD for BTC'''
 def buyBTC():
-    buy_order = client.create_order(symbol = "BTCUSDT", side = "buy", type = "MARKET", quantity = 1)
+    usdBalanceBuy = client.get_asset_balance(asset='USDT')
+    usdBalanceBuy1 = float(usdBalance['free'])
+    decimal = (usdBalanceBuy1 / float(currentPrice)) * .90
+    roundDecimal = round(decimal, 6)
+    print(roundDecimal) 
+    buy_order = client.create_order(symbol = "BTCUSDT", side = "buy", type = "MARKET", quantity = roundDecimal)
+    print('BTC Bought')
+    global btcBalance1
+    btcBalance1 = round(float(btcBalance['free']), 2)
+   # print(str(btcBalance1) + '---')
 
 '''Function below exchanges BTC for USD'''
 def sellBTC():
-    sell_order = client.create_order(symbol = "BTCUSDT", side = "sell", type = "MARKET", quantity = 1)
+    print("tryna sell")
+    btcBalance2 = round(float(btcBalance['free']), 2)
+    print(btcBalance2)
+    sell_order = client.create_order(symbol = "BTCUSDT", side = "sell", type = "MARKET", quantity = btcBalance1)
+    print("BTC Sold")
 
 '''Function below calculates percentage difference between two numbers'''
 def percentageDifference(currentPrice, buyPrice):
-    difference = (currentPrice - buyPrice) / (buyPrice) * 100
-    return difference 
+    if buyPrice != 0:
+        currentPriceFloat = float(currentPrice)
+        difference = (currentPriceFloat - buyPrice) / (buyPrice) * 100
+    else:
+        difference = 0 
+    return difference
 
 '''Put buy/sell logic here'''
-def testFunction():
-        pDifference = percentageDifference(currentPrice, buyPrice)
+def tradeLogic():
+        global buyPrice
+        global sellPrice
+        global lastOpSell
+        if buyPrice != 0:
+            pDifferenceSell = percentageDifference(currentPrice, buyPrice)
+            print(currentPrice)
+            print(buyPrice)
+            print(pDifferenceSell)
+            if sellPrice != 0:
+                pDifferenceBuy = percentageDifference(currentPrice, sellPrice)
+
         print(currentPrice)
-        if  buyPrice == 0:
-            buyBTC()
-            global buyPrice
-            buyPrice = currentPrice
-        elif pDifference >= .02 & buyPrice != 0:
-            sellBTC()
-        elif pDifference <= -0.05 & buyPrice != 0:
-            sellBTC()
+        if lastOpSell == True:
+            print("Buy running")
+            if  buyPrice == 0:
+                buyBTC()
+                buyPrice = float(currentPrice)
+                lastOpSell = False
+                orders.insert(INSERT, " BTC Purchased for " + str(buyPrice) + "\n")    
+            elif pDifferenceBuy >= buyThreshold: 
+                buyBTC()
+                buyPrice = float(currentPrice)
+                lastOpSell = False
+                orders.insert(INSERT, "1 BTC Purchased for " + str(buyPrice) + "\n")    
+        else:
+            print("sell running")
+          #  print(pDifferenceSell)
+           # print(pDifferenceBuy)
+            print(currentPrice)
+            print(buyPrice)
+            if pDifferenceSell >= sellThreshold:
+                sellBTC()
+                sellPrice = float(currentPrice)
+                lastOpSell = True
+                orders.insert(INSERT, "1 BTC Sold for " + str(sellPrice) + "\n")    
+            elif pDifferenceSell <= stopLoss:
+                sellBTC()
+                sellPrice = float(currentPrice)
+                lastOpSell = True
+                orders.insert(INSERT, "1 BTC Sold for " + str(sellPrice)+"\n")  
+
+def main():
+    window.title("StockUp")
+    window.geometry('400x270')
+    priceTicker.grid(column=0, row=0)
+    orders.grid(column=1, row=0)
+    
+    sm = BinanceSocketManager(client)
+    conn = sm.start_symbol_ticker_socket('BTCUSDT', btc_price1)
+    sm.start()
+
+    window.mainloop()
 
 
+
+if __name__ == "__main__":
+    main()
 
 
 

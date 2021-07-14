@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans&family=Ubuntu:ital@1&display=swap');
 
 /* Reset all default margin/padding from elements. Makes sizing/positioning easier */
 * {
@@ -8,20 +8,20 @@
 }
 
 html {
-  font-family: 'Roboto', sans-serif;
+  font-family: 'Noto Sans', sans-serif;
   scroll-snap-type: y mandatory;
 }
 
 body {
   color: white;
-  background-color: #101213;
+  background-color: #0f1011;
 }
 
 .page {
   padding: 20px 40px;
   min-height: 100vh; /* at least until we have enough content to span another full screen height */
   scroll-snap-align: start;
-  scroll-snap-stop: always;
+  scroll-snap-stop: normal;
 }
 
 #landing {
@@ -59,7 +59,101 @@ body {
 }
 
 #landing button {
+  border: 4px solid white;
+  color: white;
+  font-size: 1.6em;
+  background: none;
   width: 200px;
   height: 70px;
   margin-top: 20px;
+}
+
+#landing button:hover {
+  transition: 0.2s;
+  color: black;
+  background: white;
+}
+
+.page:nth-child(2) {
+  display: flex;
+  position: relative;
+}
+
+.page:nth-child(2) > * {
+  flex: 0 0 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.page:nth-child(2) > .description, .page:nth-child(2) > #right-side {
+ 
+  font-size: 1.2rem;
+}
+
+#right-side {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+}
+
+#right-side > * {
+  width: 60%;
+}
+
+.page:nth-child(2) .description {
+  color: black;
+  padding: 30px;
+  width: 50%;
+  margin-left: auto;
+  align-items: center;
+}
+
+.page:nth-child(2) .description {
+  width: 60%;
+  background: white;
+  /* border-radius: 5px; */
+  margin: auto;
+  box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
+}
+
+.page:nth-child(2) .description > *:not(:last-child)  {
+  padding-bottom: 40px;
+}
+
+#preview-picture {
+  right: 20%; 
+  width: 60%;
+  height: 45%;
+  background: white;
+  color: black;
+}
+
+#check-list {
+  padding-top: 100px;
+}
+
+.list-item {
+  display: flex;
+  align-items: center;
+}
+
+.list-item:not(:last-child) {
+  padding-bottom: 15px;
+}
+
+.list-item > img {
+  max-height: 2.2rem;
+}
+
+.list-item > li {
+  font-size: 1.2em;
+  padding-left: 10px;
+  list-style-type: none;
+}
+
+#left-side {
+  margin-left: auto;
 }
