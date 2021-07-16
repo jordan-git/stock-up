@@ -9,7 +9,7 @@
 
 html {
   font-family: 'Noto Sans', sans-serif;
-  scroll-snap-type: y mandatory;
+  /* scroll-snap-type: y mandatory; */
 }
 
 body {
@@ -17,11 +17,15 @@ body {
   background-color: #0f1011;
 }
 
+#main {
+  min-height: 100vh;
+}
+
 .page {
   padding: 20px 40px;
-  min-height: 100vh; /* at least until we have enough content to span another full screen height */
-  scroll-snap-align: start;
-  scroll-snap-stop: normal;
+   /* min-height: 100vh; at least until we have enough content to span another full screen height */
+  /* scroll-snap-align: start;
+  scroll-snap-stop: normal; */
 }
 
 #landing {
@@ -58,12 +62,29 @@ body {
   font-size: 2em;
 }
 
-#landing button {
+button {
   cursor: pointer;
-  border: 4px solid white;
+  border: 1px solid white;
   color: white;
-  font-size: 1.6em;
   background: none;
+}
+
+button:hover {
+  transition: 0.2s;
+  color: black;
+  background: white;
+  
+}
+
+button:disabled {
+  color: grey;
+  border: 1px solid grey;
+  pointer-events: none;
+}
+
+#landing button {
+  border: 4px solid white;
+  font-size: 1.6em;
   width: 200px;
   height: 70px;
   margin-top: 20px;
@@ -105,19 +126,16 @@ body {
 }
 
 .page:nth-child(2) .description {
-  color: black;
   padding: 30px;
   width: 50%;
   margin-left: auto;
   align-items: center;
-}
-
-.page:nth-child(2) .description {
-  width: 60%;
-  background: white;
+  width: 80%;
+  /* background: white; */
   /* border-radius: 5px; */
+  font-size: 1.3em;
   margin: auto;
-  box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
+  /* box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px; */
 }
 
 .page:nth-child(2) .description > *:not(:last-child)  {
@@ -159,19 +177,31 @@ body {
   margin-left: auto;
 }
 
+.description {
+  font-size: 1.2em;
+}
+
 /* Support */
 
 #contact-support {
-  width: 400px;
+  width: 350px;
 }
 
 #contact-support > .form-group {
+  text-align: right;
   padding: 5px;
   display: flex;
+  justify-content: space-around;
 }
 
 #contact-support > .form-group > * {
   flex: 1 0 50%;
+}
+
+#contact-support label {
+  flex-shrink: 1;
+  flex-grow: 0;
+  padding-right: 20px;
 }
 
 /* End support */
@@ -182,4 +212,30 @@ body {
 
 #about > div > p:not(:last-child)  {
   padding-bottom: 40px;
+}
+
+#about button {
+  font-size: 1.2em;
+}
+
+footer {
+  display: flex;
+  flex-direction: column;
+  padding: 5px 5px 0;
+  background: #0c0d0e;
+  box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
+}
+
+footer #contact-support {
+  margin-right: 10px;
+  align-self: flex-end;
+}
+
+footer #links {
+  padding: 20px;
+}
+
+footer #team-info {
+  padding: 5px 0;
+  text-align: center;
 }
