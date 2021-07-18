@@ -9,18 +9,23 @@ function scrollTo(element) {
   element.scrollIntoView({ behavior: "smooth" });
 }
 
-// Scrolls from landing to the content
+// Scroll from landing to the content
 landingBtn.addEventListener('click', () => {
   scrollTo(document.querySelector('.page:nth-child(2)'));
 });
 
+// Submit support message
 contactBtn.addEventListener('click', (evt) => {
   evt.preventDefault();
+
+  if (emailInput.value === '' || messageInput.value === '') {
+    alert("Please fill out all fields.");
+    return;
+  }
 
   contactBtn.disabled = true;
   emailInput.disabled = true;
   messageInput.disabled = true;
 
-  alert("Your message has been submitted successfully. Expect a response within 2 working days.")
-
+  alert("Your message has been submitted successfully. Expect a response within 2 working days.");
 });
