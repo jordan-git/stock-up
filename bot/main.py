@@ -6,11 +6,12 @@ from tkinter import scrolledtext
 
 ## pip install python-binance==0.7.9
 ## Installs appropriate python-binance version
+'''Declaring necesssary global variables'''
 currentPrice = 0
 buyPrice = 0
 sellPrice = 0
 
-
+'''Threshold variables'''
 buyThreshold = -0.01 
 sellThreshold = 0.01
 stopLoss = -0.05
@@ -73,7 +74,6 @@ def sellBTC():
     btcBalance = client.get_asset_balance(asset = 'BTC')
     btcBalance2 = round(float(btcBalance['free']) * .95, 5) 
     sell_order = client.create_order(symbol = "BTCUSDT", side = "sell", type = "MARKET", quantity = btcBalance2)
-    print("BTC Sold")
     soldPrice = float(currentPrice) * btcBalance2
     orders.insert(INSERT, str(btcBalance2) + " BTC Sold for " + str(soldPrice) + "\n")
 
@@ -112,9 +112,7 @@ def tradeLogic():
             if sellPrice != 0:
                 pDifferenceBuy = percentageDifference(currentPrice, sellPrice)
 
-        print(currentPrice)
         if lastOpSell == True:
-            print("Buy running")
             if  buyPrice == 0:
                 buyBTC()
                 buyPrice = float(currentPrice)
@@ -124,7 +122,6 @@ def tradeLogic():
                 buyPrice = float(currentPrice)
                 lastOpSell = False
         else:
-            print("sell running")
             if pDifferenceSell >= sellThreshold:
                 sellBTC()
                 sellPrice = float(currentPrice)
@@ -146,7 +143,7 @@ def stopBot():
 
 def main():
     window.title("StockUp")
-    window.geometry('400x270')
+    window.geometry('700x300')
     priceTicker.grid(column=0, row=1)
     orders.grid(column=1, row=1)
 
